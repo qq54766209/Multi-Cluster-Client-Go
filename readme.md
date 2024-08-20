@@ -9,16 +9,27 @@
 ## 目录结构
 
 multi-cluster-clientgo/
+
 ├── cmd/
+
 │ └── main.go # 入口文件，主要逻辑
+
 ├── internal/
+
 │ ├── manager/
+
 │ │ ├── client_manager.go # 管理多个 Kubernetes 客户端
+
 │ │ └── client_manager_test.go # 测试文件
+
 │ └── config/
+
 │ ├── config_source.go # K8sConfigSource 接口定义
+
 │ ├── token_config_source.go # TokenConfigSource 实现
+
 │ └── config_source_test.go # 测试文件
+
 └── go.mod # Go module 文件
 
 
