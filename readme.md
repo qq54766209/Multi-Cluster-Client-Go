@@ -31,6 +31,50 @@ multi-cluster-clientgo/
 - 集群初始化所需的token，用户可自定义从任何来源（配置文件，secret、数据库）获取，只需要封装成TokenConfigSource即可
 - 支持更新集群token配置
 
+### 解释
+
+- **User**: 代表使用该项目的用户，用户通过项目执行对 Kubernetes 集群的操作（如列出 Pods）。
+
+- **Multi-Cluster Client-Go**: 项目的主模块，负责处理用户操作并与多个 Kubernetes 集群交互。
+
+- **K8sClientManager**:
+  - **TokenConfigSource**: 提供集群连接所需的配置信息，包括 API Server URL、Token、CA 证书路径等。
+  - **多个 Kubernetes 客户端实例**: `K8sClientManager` 管理多个 Kubernetes 客户端，每个客户端对应一个集群。
+
+- **Kubernetes Clusters**:
+  - **集群1、集群2、集群N**: 用户通过项目连接的多个 Kubernetes 集群。
+
+- **TokenConfigSource**:
+  - **读取Token文件**: 从文件中读取 Token 以连接集群。
+  - **使用直接传递的Token**: 直接使用用户提供的 Token 以连接集群。
+  - **CA证书路径**: 如果需要验证集群 API Server 的证书，使用指定的 CA 证书。
+
+## 项目架构
+
+```mermaid
+graph TD
+    subgraph User
+        UserAction[用户操作]
+    end
+
+    subgraph App[Multi-Cluster Client-Go]
+        subgraph Manager[K8sClientManager]
+            ConfigSource --> ClientSet
+        end
+        
+        ClientSet[多个Kubernetes客户端实例] --> Clusters[Kubernetes Clusters]
+        Clusters --> Cluster1[集群1]
+        Clusters --> Cluster2[集群2]
+        Clusters --> ClusterN[集群N]
+    end
+
+    UserAction --> App
+    Manager --> ConfigSource[TokenConfigSource]
+    ConfigSource --> TokenPath[读取Token文件]
+    ConfigSource --> TokenString[使用直接传递的Token]
+    ConfigSource --> CACert[CA证书路径]
+```
+
 ## 安装
 
 1. 克隆代码库：
