@@ -36,11 +36,11 @@ func TestTokenConfigSource_GetConfigWithToken(t *testing.T) {
 
 func TestNewTokenConfigSource(t *testing.T) {
 	// 测试通过正确的参数创建 TokenConfigSource
-	apiServerURL := "https://example.com:6443"
-	tokenPath := "/path/to/token"
-	insecure := true
+	apiServerURL := "https://10.19.225.29:6443"
+	tokenPath := "token/cluster2-ca.crt"
+	insecure := false
 
-	source := NewTokenConfigSourceWithFile(apiServerURL, tokenPath, insecure)
+	source := NewTokenConfigSourceWithFile(apiServerURL, tokenPath, insecure, "")
 
 	// 验证返回的 TokenConfigSource 是否正确配置
 	if source.APIServerURL != apiServerURL {
